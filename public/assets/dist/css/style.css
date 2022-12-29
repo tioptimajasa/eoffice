@@ -1,0 +1,50 @@
+
+/*grid Layout */
+.grid-container {
+  display: grid;
+  column-gap: 50px;
+  grid-template-columns: auto auto auto;
+  background-color: #ffff;
+  padding: 10px;
+}
+
+
+.grid-item {
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 0px solid rgba(0, 0, 0, 0.8);
+  padding: 20px;
+  font-size: 30px;
+  text-align: center;
+}
+
+/*tabel */
+table {
+  border-collapse: collapse;
+  width: 200%;
+}
+
+th, td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+/* tr:hover {background-color: rgb(58, 243, 125);} */
+
+
+/*cetak */
+/* .judul{
+  text-align:center;
+
+}
+
+.halaman{
+  width:auto;
+  height: :auto;
+  position: auto;
+  border: 1px solid;
+  padding-top: 30px;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-bottom: 80px;
+} */
