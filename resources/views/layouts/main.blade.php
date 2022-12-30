@@ -46,6 +46,7 @@
 
 <link href="{{asset('assets/dist/css/summernote.css')}}" rel="stylesheet">
 <script src="{{asset('assets/dist/js/summernote.js')}}"></script>
+<script src="{{asset('assets/dist/js/summernote-paper-size.js')}}"></script>
 
 <!--select2js-->
 <link href="{{asset('assets/dist/css/select2.min.css')}}" rel="stylesheet" />
@@ -57,6 +58,7 @@
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
+        
         <!-- Preloader -->
         @include('components.preloader')
 
@@ -67,6 +69,7 @@
         @include('components.asidebar')
 
         <div class="content-wrapper">
+            
             @yield('content')
         </div>
 
@@ -88,7 +91,9 @@
 <script src="{{ asset('assets/dist/js/adminlte.js') }}"></script>
 <!-- Moment -->
 <script src="{{ asset('assets/plugins/moment/moment.min.js') }}"></script>
+
 @yield('default_scripts')
 @yield('scripts')
+
 </body>
 </html>

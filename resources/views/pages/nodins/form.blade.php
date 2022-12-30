@@ -19,6 +19,7 @@
                             $kepada = "";
                             $dari = "";
                             $isi = "";
+
                         @endphp
                     @elseif ($action === 'edit')
                     <form action="{{ route('nodin.update', $data_nodin->id) }}" method="POST" enctype="multipart/form-data" id="form_nodin">
@@ -75,16 +76,16 @@
 
                             <label for="exampleInputEmail1">Sifat</label>
                                 <select id="sifat" name="sifat" required="required" class="form-control">
-                                    <option value="1">Biasa</option>
-                                    <option value="2">Rahasia</option>
-                                    <option value="3">Sangat Rahasia</option>
+                                    <option value="Biasa">Biasa</option>
+                                    <option value="Rahasia">Rahasia</option>
+                                    <option value="Sangat Rahasia">Sangat Rahasia</option>
                                 </select>
 
                             <label for="exampleInputEmail1">Urgensi</label>
                                 <select id="urgensi" name="urgensi" required="required" class="form-control">
-                                    <option value="1">Segera</option>
-                                    <option value="2">Rutin</option>
-                                    <option value="3">Sangat Segera</option>
+                                    <option value="Segera">Segera</option>
+                                    <option value="Rutin">Rutin</option>
+                                    <option value="Sangat Segera">Sangat Segera</option>
                                 </select>
 
                             <label for="exampleInputEmail1">Perihal</label>
@@ -112,19 +113,24 @@
         $('#tembusan').select2();
      
         $('#isi').summernote({
-          
-          tabsize: 2,
-          height: 300,
-          toolbar: [
-            ['style', ['style']],
-            ['font', ['bold', 'underline', 'clear']],
-            ['color', ['color']],
-            ['para', ['ul', 'ol', 'paragraph']],
-            ['table', ['table']],
-            ['insert', ['link', 'picture', 'video']],
-            ['view', ['fullscreen', 'codeview', 'help']]
-          ]
+          height: 842,
+          toolbar:[
+                ['paperSize',['paperSize']], // The Button
+                ['style',['style']],
+                ['font',['bold','italic','underline','clear']],
+                ['fontname',['fontname']],
+                ['color',['color']],
+                ['para',['ul','ol','paragraph']],
+                ['height',['height']],
+                ['table',['table']],
+                ['insert',['media','link','hr']],
+                ['view',['fullscreen','codeview']],
+                ['help',['help']]
+            ],
         });
+        $('.note-frame').addClass('note-document');
+        $('.note-editing-area').addClass('a4');
+        $('.note-editable').css({'width':'800px'});
         function validasi(status){
             document.getElementById('status').value=status;
             document.getElementById('form_nodin').submit();
