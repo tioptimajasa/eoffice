@@ -64,10 +64,11 @@
                   <div class="row" style="width:1024px; padding-left: 600px; padding-bottom:10px">
                     <p style="padding-bottom: 20mm">{{ $nodins->dari->nama_organisasi }}</p>
                   </div>
-                  <div class="row" style="width:1024px; padding-left: 600px; padding-bottom:120px">
-                    <p style="padding-bottom: 20mm"><b><u>{{ $nodins->dari_user->name }}</u></b></p>
-                    <br />
-                    <p style="padding-bottom: 20mm">{{ $nodins->dari->jabatan }}</p>
+                  <div  align="center" style="width:900px; padding-left:450px; ;">
+                    <span style="font-family: Arial; font-size: 14px;"><b><u>{{ $nodins->dari_user->name }}</u></b></span>
+                  </div>
+                  <div align="right" style="padding-right:19mm;">
+                    <p>{{ $nodins->dari->jabatan }}</p>
                   </div>
                 </td>
             </div>
