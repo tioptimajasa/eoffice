@@ -16,22 +16,25 @@ return new class extends Migration
         Schema::dropIfExists('nodins');
         Schema::create('nodins', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('dari_id');
+            $table->biginteger('dari_id');
             $table->string('dari_user_id');
-            $table->string('kepada_id');
+            $table->biginteger('kepada_id');
             $table->string('kepada_user_id');
             $table->string('sifat');
             $table->string('urgensi');
             $table->string('perihal');
             $table->string('tembusan')->nullable();
             $table->string('lampiran_nodin')->nullable();
-            $table->text('isi');
+            $table->longtext('isi');
             $table->date('tanggal');
             $table->string('nomor_surat');
             $table->integer('nomor');
+            $table->string('nomor_approval')->nullable();
             $table->string('status');
             $table->string('reff')->nullable();
             $table->timestamps();
+            $table->string('created_by');
+            $table->string('updated_by');
         });
     }
 

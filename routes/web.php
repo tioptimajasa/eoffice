@@ -106,7 +106,8 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::post('/nodins/{id}/edit', [NodinController::class, 'update'])->name('nodin.update');
     Route::get('/nodins/{id}/delete', [NodinController::class, 'destroy'])->name('nodin.destroy');
     Route::get('/nodinreport/{id}', [NodinController::class, 'nodinreport'])->name('nodin.report');
-    Route::get('/cetaknodin', [NodinController::class, 'cetaknodin'])->name('cetaknodin');
+    Route::get('/cetaknodin/{id}', [NodinController::class, 'cetaknodin'])->name('nodin.cetaknodin');
+
 
     
 
