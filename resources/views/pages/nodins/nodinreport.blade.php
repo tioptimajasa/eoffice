@@ -67,7 +67,7 @@
                   <div  align="center" style="width:900px; padding-left:450px; ;">
                     <span style="font-family: Arial; font-size: 14px;"><b><u>{{ $nodins->dari_user->name }}</u></b></span>
                   </div>
-                  <div align="right" style="padding-right:19mm;">
+                  <div align="right" style="padding-right:21mm;">
                     <p>{{ $nodins->dari->jabatan }}</p>
                   </div>
                 </td>

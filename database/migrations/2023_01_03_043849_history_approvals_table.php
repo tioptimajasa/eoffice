@@ -13,13 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('pemeriksa_memos', function (Blueprint $table) {
+        Schema::create('history_approvals', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->char('memo_id');
+            $table->string('approval_id');
             $table->char('user_id');
             $table->integer('struktur_id');
-            $table->integer('urutan');
+            $table->string('status');
+            $table->string('keterangan');
+            
         });
     }
 
@@ -30,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pemeriksa_memos');
+        Schema::dropIfExists('history_approvals');
     }
 };

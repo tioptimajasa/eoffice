@@ -14,12 +14,15 @@ return new class extends Migration
     public function up()
     {
         Schema::dropIfExists('history_approval_nodins');
-        Schema::create('history_approval_nodins', function (Blueprint $table) {
-            $table->id();
+        Schema::dropIfExists('pemeriksa_memos');
+        Schema::dropIfExists('pemeriksa_nodins');
+        Schema::dropIfExists('approvals');
+        Schema::create('approvals', function (Blueprint $table) {
+            $table->uuid('id')->primary();
             $table->timestamps();
-            $table->integer('pemeriksa_nodin_id');
-            $table->string('keterangan');
-            $table->integer('status');
+            $table->char('user_id');
+            $table->integer('struktur_id');
+            $table->string('status');
         });
     }
 
@@ -30,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('history_approval_nodins');
+        Schema::dropIfExists('approvals');
     }
 };
