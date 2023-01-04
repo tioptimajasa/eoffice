@@ -33,19 +33,60 @@
 
           <li class="nav-item">
             <a href="/admin/dashboard" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
+              <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Dashboard
                 <!-- <span class="right badge badge-danger">New</span> -->
               </p>
             </a>
           </li>
-
+          <li class="nav-item">
+            <a href="{{ route('struktur.diagram') }}" class="nav-link">
+              <i class="nav-icon fas fa-chart-pie"></i>
+              <p>Diagram Struktur</p>
+            </a>
+          </li>
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon ion ion-person"></i>
               <p>
-                User Management
+                Surat
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ route('nodin.index') }}" class="nav-link active" style="background-color: #28a745">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Nota Dinas</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('memo.index') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Memo</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{route('suratmasuk.index')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Surat Masuk</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="nav-icon ion ion-clipboard"></i>
+                  <p>Surat Keluar</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon ion ion-gear-b"></i>
+              <p>
+               Settings
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
@@ -68,43 +109,9 @@
                   <p>Struktur</p>
                 </a>
               </li>
-              <li class="nav-item">
-                <a href="{{ route('struktur.diagram') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Diagram Struktur</p>
-                </a>
-              </li>
             </ul>
           </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon ion ion-person"></i>
-              <p>
-                Menu Data
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="{{ route('nodin.index') }}" class="nav-link active" style="background-color: #28a745">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Buat Nota Dinas</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{ route('memo.index') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Buat Memo</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{route('suratmasuk.index')}}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Surat Masuk</p>
-                </a>
-              </li>
-            </ul>
-          </li>
+         
           <li class="nav-item">
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
