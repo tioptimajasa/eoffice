@@ -221,7 +221,7 @@ class UserSeeder extends Seeder
                 'id'=>Str::uuid(),
                 'name'=>'Eka Prasetya Husen',
                 'email'=>'eka.prasetya@optimajasa.co.id',
-                'struktur_id'=>'25',
+                'struktur_id'=>'26',
                 'password' => Hash::make('admin123'),    
                 'upload_data' => 'storage/uploads/K952207964.jpg'  
 
@@ -321,7 +321,7 @@ class UserSeeder extends Seeder
                 'id'=>Str::uuid(),
                 'name'=>'Mike Ariga Elsayrafl',
                 'email'=>'mike@optimajasa.co.id',
-                'struktur_id'=>'18',
+                'struktur_id'=>'30',
                 'password' => Hash::make('admin123'),  
                 'upload_data' => 'storage/uploads/K952009119.jpg'  
 

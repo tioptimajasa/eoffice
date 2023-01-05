@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Nodin;
 use App\Models\Struktur;
 use App\Models\User;
-use App\Models\PemeriksaNodin;
+use App\Models\Approval;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
@@ -13,8 +13,14 @@ use Routes\web;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
+use RealRashid\SweetAlert\Facades\Alert;
+use App\Http\Controllers\ApprovalController;
+
+
 use PDF;
 use DOMDocument;
+use DB;
+
 
 
 
@@ -30,7 +36,8 @@ class NodinController extends Controller
      */
     public function index()
     {
-        $nodins = Nodin::orderBy('created_at', 'DESC')->get();
+        $nodins = Nodin::where('created_by',Auth::user()->id)->orderBy('created_at', 'DESC')->get();
+     
         return view('pages.nodins.index', [
             'nodins' => $nodins
         ]);
@@ -144,16 +151,24 @@ class NodinController extends Controller
      }
     public function store(Request $request)
     {
+        
         if(!empty($request->file('lampiran_nodin'))){
+
+            
             $file = $request->file('lampiran_nodin');
             $folder_destinations = 'storage/lampiran_nodin';
             $file->move($folder_destinations,$file->getClientOriginalName());
+            $dir_file = $folder_destinations . '/' . $file->getClientOriginalName();
+            
+        }else{
+            $dir_file = null;
         }
+       
         $struktur = User::where('id', Auth::user()->id)->first('struktur_id');
         
         $notadinas = Struktur::where('id', $struktur->struktur_id)->first('patern_nota');
         $patern_notadinas = $notadinas->patern_nota;
-
+        
         $max_id = Nodin::max('nomor');
         $nomor = (empty($max_id)?1:$max_id+1);
         $nomor_generate = "e-".str_replace("{no}",$nomor,str_replace("{year}",date('Y'),str_replace("{month}",$this->getRomawi(date('m')),$patern_notadinas)));
@@ -162,13 +177,18 @@ class NodinController extends Controller
         $dom = new \domdocument();
         $isi_detail = @$dom->loadHtml($isi, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
         $isi_detail = $dom->saveHTML();
+        if($request->status==1){
+            $nomor_approval = ApprovalController::GenerateApproval($request->pemeriksa);
+        }else{
+            $nomor_approval=null;   
+        }
         
         Nodin::create([
             'id'=>$id_generate,
             'dari_id' => $request->dari_id,
-            'dari_user_id' => User::where('struktur_id',$request->dari_id)->pluck('id'),
+            'dari_user_id' => User::where('struktur_id',$request->dari_id)->pluck('id')->first(),
             'kepada_id' => $request->kepada_id,
-            'kepada_user_id' => User::where('struktur_id',$request->kepada_id)->pluck('id'),
+            'kepada_user_id' => User::where('struktur_id',$request->kepada_id)->pluck('id')->first(),
             'sifat' => $request->sifat,
             'urgensi' => $request->urgensi,
             'perihal' => $request->perihal,
@@ -176,25 +196,17 @@ class NodinController extends Controller
             'tanggal' => now(),
             'nomor' => $nomor,
             'nomor_surat' => $nomor_generate,
-            'lampiran_nodin' =>  $folder_destinations . '/' . $file->getClientOriginalName(),
+            'nomor_approval' => $nomor_approval,
             'status' => $request->status,
             'reff' => $request->reff,
+            'created_by'=> Auth::user()->id,
+            'updated_by'=> Auth::user()->id,
+            'lampiran_nodin' =>  $dir_file,
             // 'tembusan' => $request->tembusan,
 
         ]);
-        $urutan = 1;
-        foreach ($request->pemeriksa as $_pemeriksa) {
-           
-            $user_pemeriksa = User::where('struktur_id',$_pemeriksa)->pluck('id');
-            PemeriksaNodin::create([
-                'nodin_id'=> $id_generate,
-                'user_id' => $user_pemeriksa,
-                'struktur_id'=> $_pemeriksa,
-                'urutan'=>$urutan,
-            ]);
-            $urutan++;
-        }
-        return redirect()->route('nodin.index');
+       
+        return redirect()->route('nodin.index')->with('success', 'Data User BERHASIL disimpan!');
     }
 
 
@@ -231,6 +243,7 @@ class NodinController extends Controller
             'nodin_kepada'=>$nodin_kepada,
             'nodin_dari'=>$_nodin_dari,
             'nodin_pemeriksa'=>$_nodin_dari,
+            
         ]);
     }
 
@@ -256,32 +269,32 @@ class NodinController extends Controller
         $nodin->status = $request->status;
         $nodin->tembusan = $request->tembusan;
         $nodin->reff = $request->reff;
-
-        $nodin->save();
-        return redirect()->route('nodin.index');
+        $nodin->updated_by = Auth::user()->id;
+        
+        if($nodin->save()){
+            return redirect()->route('nodin.index')->with('success', 'Data User BERHASIL disimpan!');
+        }else{
+            return redirect()->route('nodin.index')->with('success', 'Data User GAGAL disimpan!');
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Nodin  $nodin
-     * @return \Illuminate\Http\Response
-     */
+
+
     public function destroy($id)
     {
         $nodin = Nodin::find($id);
-        $nodin->delete();
-        return redirect()->route('nodin.index');
+        if($nodin->delete()){
+             return redirect()->route('nodin.index')->with('delete', ' Data User BERHASIL dihapus!');
+        }else{
+            return redirect()->route('nodin.index')->with('delete', 'Data User GAGAL dihapus');
+        }
+
     }
 
+
+
+
     //Report
-
-
-    //Report
-
-
-
-        
     public function nodinreport($id)
     {
        $action = 'action';
@@ -293,38 +306,23 @@ class NodinController extends Controller
            'nodins' => $data_nodins,
            ]);
     }
-
-
-    
-   public function cetaknodin()
-   {
-      $nodins = Nodin::all()->toArray();
-      //dd($nodins);
-      $pdf = PDF::loadView('pages.nodins.cetaknodin', ['nodins' => $nodins])->setOptions(['defaultFont' => 'sans-serif']);
-
-      $pdf->setPaper('A4', 'potrait');
-
-      return $pdf->stream('laporan.pdf');
-
-  }
    
-
 
     
    //Exsport to PDF
+   public function cetaknodin($id)
+    {
+       $nodins = Nodin::find($id);
+       view()->share('nodins', $nodins);
+    //    print_r($nodins);
+    //    die();
 
-//    public function cetaknodin($id)
-//     {
-//        $nodins = Nodin::where('id',$id)->pluck('id');
-//        die();
-//        $pdf = PDF::loadView('pages.nodins.cetaknodin', ['nodins' => $nodins])->setOptions(['defaultFont' => 'sans-serif']);
+       $pdf = PDF::loadView('pages.nodins.cetaknodin', ['nodins' => $nodins])->setOptions(['defaultFont' => 'sans-serif']);
+       $pdf->setPaper('A4', 'potrait');
+       return $pdf->stream('nodin.pdf');
+    }
 
-//        $pdf->setPaper('A4', 'potrait');
-
-//        return $pdf->stream('nodin.pdf');
-
-//    }
-
+    
 
 
 }

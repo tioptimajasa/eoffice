@@ -4,7 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
 use App\Models\Struktur;
+use App\Models\Approval;
 
 class Nodin extends Model
 {
@@ -28,6 +30,9 @@ class Nodin extends Model
         'reff',
         'nomor',
         'nomor_surat',
+        'nomor_approval',
+        'created_by',
+        'updated_by'
     ];
    
     /**
@@ -45,9 +50,25 @@ class Nodin extends Model
         return 'string';
     }
  
-    public function struktur()
+    public function dari()
     {
-        return $this->belongsToMany(Struktur::class, 'id', 'dari_id', 'kepada_id');
+        return $this->belongsTo(Struktur::class,'dari_id', 'id');
     }
+    public function kepada()
+    {
+        return $this->belongsTo(Struktur::class,'kepada_id', 'id');
+    }
+    public function data_approval()
+    {
+        return $this->hasMany(Approval::class,'id','nomor_approval');
+    }
+    public function dari_user()
+    {
+        return $this->belongsTo(User::class,'dari_user_id', 'id');
+    }   
+    public function kepada_user()
+    {
+        return $this->belongsTo(User::class,'kepada_user_id', 'id');
+    }   
    
 }
